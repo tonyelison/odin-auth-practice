@@ -7,8 +7,10 @@ const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const mongoDb = "mongodb+srv://admin:TZzwsZTVdWuQRPA4@cluster0.63ognyt.mongodb.net/?retryWrites=true&w=majority";
-mongoose.connect(mongoDb);
+// configure env secrets
+require('dotenv').config();
+
+mongoose.connect(process.env.MONGO_DB_URL);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 
@@ -39,7 +41,7 @@ passport.use(
       if (!match) {
         return done(null, false, { message: "Incorrect password" })
       }
-      
+
       return done(null, user);
     } catch(err) {
       return done(err);
